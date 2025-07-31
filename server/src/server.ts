@@ -15,6 +15,7 @@ async function initializeDatabase() {
     orm = await MikroORM.init(config);
     console.log('✅ Database connected successfully!');
     console.log(`📊 Database: ${process.env.DB_NAME}`);
+    // Set the global ORM instance
     setORM(orm);
     return orm;
   } catch (error) {

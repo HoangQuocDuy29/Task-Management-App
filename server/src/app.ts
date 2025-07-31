@@ -30,19 +30,18 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// ORM instance will be set from server.ts
-let orm: any = null;
+// Global ORM variable
+let globalOrm: any = null;
 
-export const setORM = (ormInstance: any) => {
-  orm = ormInstance;
-  app.use((req, res, next) => {
-    if (orm) {
-      RequestContext.create(orm.em, next);
-    } else {
-      next();
-    }
-  });
-};
+// RequestContext middleware - IMPORTANT: Must be before routes
+app.use((req, res, next) => {
+  if (globalOrm) {
+    RequestContext.create(globalOrm.em, next);
+  } else {
+    console.error('⚠️ ORM not initialized for request:', req.path);
+    next();
+  }
+});
 
 // Routes
 app.get('/', (req, res) => {
@@ -60,7 +59,7 @@ app.get('/health', (req, res) => {
     message: 'API is healthy',
     data: {
       status: 'OK',
-      database: orm ? 'Connected' : 'Disconnected',
+      database: globalOrm ? 'Connected' : 'Disconnected',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
     }
@@ -77,5 +76,11 @@ app.use('*', (req, res) => {
 });
 
 app.use(errorHandler);
+
+// Export function to set ORM
+export const setORM = (ormInstance: any) => {
+  globalOrm = ormInstance;
+  console.log('✅ ORM set for RequestContext');
+};
 
 export default app;

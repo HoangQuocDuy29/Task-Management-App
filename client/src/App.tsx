@@ -1,16 +1,29 @@
+import { useAuth } from './hooks/useAuth';
+import { Login } from './components/layout/Login';
+import { Layout } from './components/layout/Layout';
+import { Dashboard } from './components/Dashboard';
+import { MyTasks } from './components/MyTasks';
+
 function App() {
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Task Management App
-        </h1>
-        <p className="text-gray-600">
-          Frontend is running successfully!
-        </p>
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-600">Loading...</div>
       </div>
-    </div>
-  )
+    );
+  }
+
+  if (!user) {
+    return <Login />;
+  }
+
+  return (
+    <Layout>
+      {user.role === 'admin' ? <Dashboard /> : <MyTasks />}
+    </Layout>
+  );
 }
 
-export default App
+export default App;

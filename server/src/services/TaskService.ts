@@ -8,13 +8,13 @@ export class TaskService {
 
   async getAllTasks(): Promise<Task[]> {
     return this.em.find(Task, {}, { 
-      populate: ['assignedTo', 'createdBy', 'project', 'tickets'] 
+      populate: ['assignedTo', 'createdBy', 'project']  // ← Bỏ 'tickets' tạm thời
     });
   }
 
   async getTaskById(id: number): Promise<Task | null> {
     return this.em.findOne(Task, { id }, { 
-      populate: ['assignedTo', 'createdBy', 'project', 'tickets', 'logworks'] 
+      populate: ['assignedTo', 'createdBy', 'project']  // ← Bỏ 'tickets', 'logworks' tạm thời
     });
   }
 
@@ -59,7 +59,9 @@ export class TaskService {
       assignedTo: assignedUser,
       createdBy: createdByUser,
       project,
-    }as any);
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as any);
 
     await this.em.persistAndFlush(task);
     return task;
