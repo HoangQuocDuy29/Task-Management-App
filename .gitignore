@@ -1,0 +1,27 @@
+# Dependencies
+client/node_modules/
+server/node_modules/
+
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Environment variables (quan trọng!)
+.env
+client/.env
+client/.env.example
+server/.env
+server/.env.example
+
+# Build outputs
+client/dist/
+server/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+
+server/backup/
+server/dist/
