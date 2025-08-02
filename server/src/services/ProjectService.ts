@@ -1,3 +1,4 @@
+// server/src/services/ProjectService.ts
 import { EntityManager } from '@mikro-orm/core';
 import { Project } from '../entities/Project.entity';
 import { User } from '../entities/User.entity';

@@ -1,3 +1,4 @@
+// server/src/validations/user.validation.ts
 import { z } from 'zod';
 
 export const createUserSchema = z.object({

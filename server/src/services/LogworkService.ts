@@ -1,3 +1,4 @@
+// server/src/services/LogworkService.ts
 import { EntityManager } from '@mikro-orm/core';
 import { Logwork } from '../entities/Logwork.entity';
 import { User } from '../entities/User.entity';

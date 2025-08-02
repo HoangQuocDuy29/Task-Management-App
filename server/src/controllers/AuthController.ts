@@ -1,3 +1,4 @@
+// server/src/controllers/AuthController.ts
 import { Request, Response } from 'express';
 import { RequestContext } from '@mikro-orm/core';
 import { AuthService } from '../services/AuthService';

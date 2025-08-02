@@ -1,3 +1,4 @@
+// server/src/middleware/role.middleware.ts
 import { Response, NextFunction } from 'express';
 import { AuthRequest } from './auth.middleware';
 import { sendError } from '../utils/response.utils';

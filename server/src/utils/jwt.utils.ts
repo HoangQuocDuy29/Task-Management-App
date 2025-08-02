@@ -1,3 +1,4 @@
+// server/src/utils/jwt.utils.ts
 import jwt from 'jsonwebtoken';
 import { User } from '../entities/User.entity';
 

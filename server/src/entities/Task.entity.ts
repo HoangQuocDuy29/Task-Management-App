@@ -1,3 +1,4 @@
+// server/src/entities/Task.entity.ts
 import { Entity, PrimaryKey, Property, ManyToOne, Enum, OneToMany, Collection } from '@mikro-orm/core';
 import { User } from './User.entity';
 import { Project } from './Project.entity';

@@ -1,3 +1,4 @@
+// server/src/entities/Logwork.entity.ts
 import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
 import { User } from './User.entity';
 import { Task } from './Task.entity';

@@ -1,3 +1,4 @@
+// server/src/routes/project.routes.ts
 import { Router } from 'express';
 import { ProjectController } from '../controllers/ProjectController';
 import { authenticateToken } from '../middleware/auth.middleware';
@@ -8,7 +9,7 @@ import { createProjectSchema, updateProjectSchema } from '../validations/project
 const router = Router();
 
 // All routes require authentication and admin role
-router.use(authenticateToken, requireAdmin);
+//router.use(authenticateToken, requireAdmin);
 
 router.get('/', ProjectController.getAllProjects);
 router.post('/', validate(createProjectSchema), ProjectController.createProject);

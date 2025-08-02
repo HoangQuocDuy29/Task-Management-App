@@ -1,3 +1,4 @@
+// server/src/types/index.ts
 export interface LoginRequest {
   email: string;
   password: string;

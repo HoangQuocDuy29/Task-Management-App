@@ -1,3 +1,4 @@
+// server/src/routes/ticket.routes.ts
 import { Router } from 'express';
 import { UserController } from '../controllers/UserController';
 import { authenticateToken } from '../middleware/auth.middleware';

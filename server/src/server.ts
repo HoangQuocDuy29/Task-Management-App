@@ -1,3 +1,4 @@
+// server/src/server.ts
 import dotenv from 'dotenv';
 import { MikroORM } from '@mikro-orm/core';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';

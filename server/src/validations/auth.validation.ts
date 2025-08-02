@@ -1,3 +1,4 @@
+// server/src/validations/auth.validation.ts
 import { z } from 'zod';
 
 export const loginSchema = z.object({

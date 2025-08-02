@@ -1,3 +1,4 @@
+// server/src/controllers/LogworkController.ts
 import { Response } from 'express';
 import { RequestContext } from '@mikro-orm/core';
 import { LogworkService } from '../services/LogworkService';

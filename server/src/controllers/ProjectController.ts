@@ -1,3 +1,4 @@
+// server/src/controllers/ProjectController.ts
 import { Response } from 'express';
 import { RequestContext } from '@mikro-orm/core';
 import { ProjectService } from '../services/ProjectService';

@@ -1,3 +1,4 @@
+// server/src/app.ts
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -10,22 +11,33 @@ import { errorHandler } from './middleware/error.middleware';
 const app = express();
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: {
-    success: false,
-    message: 'Too many requests from this IP, please try again later.',
-  }
-});
+//const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 100,
+//   message: {
+//     success: false,
+//     message: 'Too many requests from this IP, please try again later.',
+//   }
+// });
+
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 1000, // ✅ Tăng từ 100 lên 1000 requests
+//   message: {
+//     success: false,
+//     message: 'Too many requests from this IP, please try again later.',
+//   }
+// });
 
 // Middleware
 app.use(helmet());
 app.use(morgan('combined'));
-app.use(limiter);
+//app.use(limiter);
 app.use(cors({
   origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], // ✅ Explicit methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // ✅ Explicit headers
 }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));

@@ -1,3 +1,4 @@
+// server/src/routes/logwork.routes.ts
 import { Router } from 'express';
 import { LogworkController } from '../controllers/LogworkController';
 import { authenticateToken } from '../middleware/auth.middleware';

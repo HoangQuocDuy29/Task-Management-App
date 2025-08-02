@@ -1,15 +1,12 @@
+// server/src/entities/Ticket.entity.ts
 import { Entity, PrimaryKey, Property, ManyToOne, Enum } from '@mikro-orm/core';
 import { Task } from './Task.entity';
 import { User } from './User.entity';
 
-export enum TicketType {
-  BUG = 'bug',
-  FEATURE = 'feature',
-  IMPROVEMENT = 'improvement',
-}
-
 export enum TicketStatus {
-  OPEN = 'open',
+  PENDING = 'pending',
+  APPROVED = 'approved', 
+  REJECTED = 'rejected',
   IN_PROGRESS = 'in_progress',
   RESOLVED = 'resolved',
   CLOSED = 'closed',
@@ -26,17 +23,29 @@ export class Ticket {
   @Property({ type: 'text', nullable: true })
   description?: string;
 
-  @Enum(() => TicketType)
-  type: TicketType = TicketType.BUG;
-
   @Enum(() => TicketStatus)
-  status: TicketStatus = TicketStatus.OPEN;
+  status: TicketStatus = TicketStatus.PENDING;
+
+  @Property({ nullable: true })
+  priority?: string;
+
+  @Property({ type: 'text', nullable: true })
+  notes?: string;
 
   @ManyToOne(() => Task)
   task!: Task;
 
   @ManyToOne(() => User)
-  createdBy!: User;
+  requestBy!: User; // ✅ Match với request_by_id
+
+  @ManyToOne(() => User, { nullable: true })
+  approvedBy?: User; // ✅ Match với approved_by_id
+
+  @Property({ nullable: true })
+  requestedAt?: Date;
+
+  @Property({ nullable: true })
+  approvedAt?: Date;
 
   @Property()
   createdAt: Date = new Date();

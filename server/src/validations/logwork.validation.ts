@@ -1,3 +1,4 @@
+// server/src/validations/logwork.validation.ts
 import { z } from 'zod';
 
 export const createLogworkSchema = z.object({

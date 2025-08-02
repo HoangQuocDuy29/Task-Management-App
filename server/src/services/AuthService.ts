@@ -1,3 +1,4 @@
+// server/src/services/AuthService.ts
 import { EntityManager } from '@mikro-orm/core';
 import { User, UserRole } from '../entities/User.entity';
 import { hashPassword, comparePassword } from '../utils/password.utils';

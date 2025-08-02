@@ -1,47 +1,51 @@
+// server/src/services/TicketService.ts
 import { EntityManager } from '@mikro-orm/core';
-import { Ticket, TicketType, TicketStatus } from '../entities/Ticket.entity';
+import { Ticket, TicketStatus } from '../entities/Ticket.entity'; // ✅ Remove TicketType
 import { Task } from '../entities/Task.entity';
-import { User } from '../entities/User.entity';
+import { User } from '../entities/User.entity'; // ✅ Fix import path
 
 export class TicketService {
   constructor(private em: EntityManager) {}
 
   async getAllTickets(): Promise<Ticket[]> {
     return this.em.find(Ticket, {}, { 
-      populate: ['task', 'createdBy'] 
+      populate: ['task', 'requestBy', 'approvedBy'] // ✅ Fix references
     });
   }
 
   async getTicketById(id: number): Promise<Ticket | null> {
     return this.em.findOne(Ticket, { id }, { 
-      populate: ['task', 'createdBy'] 
+      populate: ['task', 'requestBy', 'approvedBy'] // ✅ Fix references
     });
   }
 
   async createTicket(ticketData: {
     title: string;
     description?: string;
-    type: TicketType;
+    priority?: string;
     taskId: number;
-    createdById: number;
+    requestById: number; // ✅ This will map to requested_by_id
+    notes?: string;
   }): Promise<Ticket> {
     const task = await this.em.findOne(Task, { id: ticketData.taskId });
     if (!task) {
       throw new Error('Task not found');
     }
 
-    const createdByUser = await this.em.findOne(User, { id: ticketData.createdById });
-    if (!createdByUser) {
-      throw new Error('Creator user not found');
+    const requestByUser = await this.em.findOne(User, { id: ticketData.requestById });
+    if (!requestByUser) {
+      throw new Error('Request user not found');
     }
 
     const ticket = this.em.create(Ticket, {
       title: ticketData.title,
       description: ticketData.description,
-      type: ticketData.type,
+      priority: ticketData.priority,
       task,
-      createdBy: createdByUser,
-    }as any);
+      requestBy: requestByUser, // ✅ Updated reference
+      notes: ticketData.notes,
+      requestedAt: new Date(), // ✅ Set requested time
+    } as any);
 
     await this.em.persistAndFlush(ticket);
     return ticket;
@@ -50,9 +54,11 @@ export class TicketService {
   async updateTicket(id: number, updateData: {
     title?: string;
     description?: string;
-    type?: TicketType;
     status?: TicketStatus;
+    priority?: string;
     taskId?: number;
+    notes?: string;
+    approvedById?: number;
   }): Promise<Ticket> {
     const ticket = await this.em.findOne(Ticket, { id });
     if (!ticket) {
@@ -67,11 +73,22 @@ export class TicketService {
       ticket.task = task;
     }
 
+    if (updateData.approvedById) {
+      const approvedBy = await this.em.findOne(User, { id: updateData.approvedById });
+      if (!approvedBy) {
+        throw new Error('Approved user not found');
+      }
+      ticket.approvedBy = approvedBy;
+      ticket.approvedAt = new Date();
+    }
+
+    // ✅ Remove the 'type' reference - không có trong new schema
     Object.assign(ticket, {
       title: updateData.title ?? ticket.title,
       description: updateData.description ?? ticket.description,
-      type: updateData.type ?? ticket.type,
       status: updateData.status ?? ticket.status,
+      priority: updateData.priority ?? ticket.priority,
+      notes: updateData.notes ?? ticket.notes,
     });
 
     await this.em.persistAndFlush(ticket);
@@ -87,3 +104,5 @@ export class TicketService {
     await this.em.removeAndFlush(ticket);
   }
 }
+
+
